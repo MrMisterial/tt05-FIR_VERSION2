@@ -17,16 +17,19 @@ module FIR(
     
     reg event_shift_taps;
     reg event_start_fir;
+    reg event_init_taps;
     
     localparam IDLE         = 2'b00;
     localparam ACTIVE       = 2'b01;
     localparam CONFIG       = 2'b10;
+    localparam SETUP        = 2'b11;
     
     
     
     always @ (posedge clk) begin	
     		if(reset == 1'b1) begin
-    			state <= IDLE; 			
+    			state <= SETUP; 	
+    			/*		
     			tap0 <= 2'b01;
 			tap1 <= 2'b00;
 			tap2 <= 2'b01;
@@ -34,7 +37,8 @@ module FIR(
 			tap4 <= 2'b01;
 			tap5 <= 2'b00;
 			tap6 <= 2'b01;
-			tap7 <= 2'b00;		
+			tap7 <= 2'b00;	
+			*/	
     		end
     		else begin
     			state <= next_state;
@@ -44,34 +48,39 @@ module FIR(
     	
     always @(state,s_set_coeffs,s_axis_fir_tvalid) begin
     	case (state)
+    	    SETUP: begin
+    	    	next_state <= IDLE;
+    	    
+    	    end
+    	    
             IDLE: begin
 		if (s_axis_fir_tvalid == 1'b1) begin
-			next_state = ACTIVE;
+			next_state <= ACTIVE;
 		end
 		
 		if (s_set_coeffs == 1'b1) begin
-			next_state = CONFIG;
+			next_state <= CONFIG;
 		end
             end
             ACTIVE: begin
             	if (s_set_coeffs == 1'b1) begin
-            		next_state = CONFIG;
+            		next_state <= CONFIG;
             	end
             	
             
             	if (s_axis_fir_tvalid == 1'b0 && s_set_coeffs == 1'b0) begin
-            		next_state = IDLE;
+            		next_state <= IDLE;
             	end
                 
             end 
             CONFIG: begin
             	if (s_set_coeffs == 1'b0) begin
-                	next_state = IDLE;
+                	next_state <= IDLE;
                 end
             end
             
             default: 
-                    next_state = IDLE;
+                    next_state <= IDLE;
         endcase
     end
     
@@ -79,7 +88,11 @@ module FIR(
     always @(state) begin
     
     	case (state)
+    		SETUP: begin
+    			event_init_taps <= 1'b1;
+    		end
 		IDLE: begin
+			event_init_taps <= 1'b0;
 			event_shift_taps <= 1'b0;
 			event_start_fir <= 1'b0;
 			
@@ -98,6 +111,7 @@ module FIR(
 		end
 
 		default: begin
+			event_init_taps <= 1'b0;
 			event_shift_taps <= 1'b0;
 			event_start_fir <= 1'b0;
 		end
@@ -108,9 +122,23 @@ module FIR(
     
     always @ (negedge clk)
     	begin
+    	
     		if(event_shift_taps == 1'b1)
     			begin
-    			/*
+    			
+	    			tap0 <= 2'b01;
+				tap1 <= 2'b00;
+				tap2 <= 2'b01;
+				tap3 <= 2'b00;
+				tap4 <= 2'b01;
+				tap5 <= 2'b00;
+				tap6 <= 2'b01;
+				tap7 <= 2'b00;
+    			
+    			end
+    		if(event_init_taps == 1'b1)
+    			begin
+    			
 				tap0 <= x_n[5:4];
 				tap1 <= x_n[3:2];
 				tap2 <= x_n[1:0];
@@ -119,8 +147,8 @@ module FIR(
 				tap5 <= tap2;
 				tap6 <= tap3;
 				tap7 <= tap4;
+				
 				/*
-
 				buff0 <= 6'd0;
 				buff1 <= 6'd0;        
 				buff2 <= 6'd0;         
