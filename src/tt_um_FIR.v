@@ -1,5 +1,4 @@
 `default_nettype none
-`include "fir.v"
 
 module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     input  wire [7:0] ui_in,    // Dedicated inputs - connected to the input switches
