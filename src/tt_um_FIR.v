@@ -69,6 +69,7 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
         .s_axis_fir_tvalid(s_axis_fir_tvalid), 
         .s_axis_fir_tready(s_axis_fir_tready),    
         .m_axis_fir_tdata(m_axis_fir_tdata));  
-	*/
+        */
+	
 
 endmodule
