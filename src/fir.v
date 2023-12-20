@@ -38,7 +38,10 @@ module FIR(
                 begin
                     buff_cnt <= 4'd0;
                     enable_fir <= 1'b0;
-                    in_sample <= 6'd0;                   
+                    in_sample <= 6'd0;   
+                    
+                    s_axis_fir_tready <= 1'b0;
+                    enable_buff <= 1'b0;                
                 end
             else if (s_axis_fir_tvalid == 1'b0)
                 begin
@@ -51,14 +54,20 @@ module FIR(
                     buff_cnt <= 4'd0;
                     enable_fir <= 1'b1;
                     in_sample <= s_axis_fir_tdata;
+                    
+                    s_axis_fir_tready <= 1'b1;
+                    enable_buff <= 1'b1;
                 end
             else
                 begin
                     buff_cnt <= buff_cnt + 1;
                     in_sample <= s_axis_fir_tdata;
+                    
+                    s_axis_fir_tready <= 1'b1;
+                    enable_buff <= 1'b1;
                 end
         end   
-
+/*
     always @ (posedge clk)
         begin
             if(reset == 1'b0 || s_axis_fir_tvalid == 1'b0)
@@ -72,7 +81,7 @@ module FIR(
                     enable_buff <= 1'b1;
                 end
         end
-    
+  */  
     /* Circular buffer bring in a serial input sample stream that 
      * creates an array of 15 input samples for the 15 taps of the filter. */
     always @ (posedge clk)
