@@ -11,8 +11,8 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-    wire reset = ! rst_n;
-    wire [6:0] led_out;
+    wire reset = rst_n;
+    //wire [6:0] led_out;
     //assign uo_out[7:0] = 8'b00000000;
     assign uio_out[7:0] = 8'b00000000;
     assign uio_oe[7:0] = 8'b11111111;
@@ -30,7 +30,7 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
 
     // if external inputs are set then use that as compare count
     // otherwise use the hard coded MAX_COUNT
-    wire [23:0] compare = ui_in == 0 ? MAX_COUNT: {6'b0, ui_in[7:0], 10'b0};
+    //wire [23:0] compare = ui_in == 0 ? MAX_COUNT: {6'b0, ui_in[7:0], 10'b0};
 
 	/*
     always @(posedge clk) begin
