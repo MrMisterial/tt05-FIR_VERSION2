@@ -13,7 +13,7 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
 
     wire reset = ! rst_n;
     wire [6:0] led_out;
-    assign uo_out[7:0] = 8'b00000000;
+    //assign uo_out[7:0] = 8'b00000000;
     assign uio_out[7:0] = 8'b00000000;
     assign uio_oe[7:0] = 8'b11111111;
     //assign uo_out[7] = 1'b0;
@@ -47,9 +47,9 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     // instantiate segment display
     //seg7 seg7(.counter(digit), .segments(led_out));
     
-        /*
+        
     wire [7:0] m_axis_fir_tdata; //FIR OUTPUT DATA
-    assign uio_out = m_axis_fir_tdata;
+    assign uo_out = m_axis_fir_tdata;
    
     
     wire [5:0] s_axis_fir_tdata; //FIR INPUT DATA 
@@ -71,7 +71,7 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
         .s_axis_fir_tvalid(s_axis_fir_tvalid), 
         .s_axis_fir_tready(s_axis_fir_tready),    
         .m_axis_fir_tdata(m_axis_fir_tdata));  
-        */
+        
 	
 
 endmodule
