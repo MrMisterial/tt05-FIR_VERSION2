@@ -32,6 +32,7 @@ module FIR(
     /* This loop sets the tvalid flag on the output of the FIR high once 
      * the circular buffer has been filled with input samples for the 
      * first time after a reset condition. */
+     /*
     always @ (posedge clk or negedge reset)
         begin
             if (reset == 1'b0) //if (reset == 1'b0 || tvalid_in == 1'b0)
@@ -67,6 +68,7 @@ module FIR(
                     enable_buff <= 1'b1;
                 end
         end   
+        */
 /*
     always @ (posedge clk)
         begin
@@ -93,6 +95,13 @@ module FIR(
     /* Multiply stage of FIR */
     always @ (posedge clk)
         begin
+        
+        	enable_buff <= 1'b1; 
+        	enable_fir <= 1'b1;
+        	in_sample <= s_axis_fir_tdata;
+        	s_axis_fir_tready <= 1'b1;
+        
+        	
         
              if(enable_buff == 1'b1)
                 begin
