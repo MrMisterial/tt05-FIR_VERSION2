@@ -84,9 +84,17 @@ module FIR(
   */  
     /* Circular buffer bring in a serial input sample stream that 
      * creates an array of 15 input samples for the 15 taps of the filter. */
+     /*
     always @ (posedge clk)
         begin
-            if(enable_buff == 1'b1)
+            
+        end
+        */
+    /* Multiply stage of FIR */
+    always @ (posedge clk)
+        begin
+        
+             if(enable_buff == 1'b1)
                 begin
                     buff0 <= in_sample;
                     buff1 <= buff0;        
@@ -110,11 +118,12 @@ module FIR(
                     buff7 <= buff7;     
                     
                 end
-        end
         
-    /* Multiply stage of FIR */
-    always @ (posedge clk)
-        begin
+        
+        
+        
+        
+        
             if (enable_fir == 1'b1)
                 begin
                     acc0 <= tap0 * buff0;
@@ -126,16 +135,20 @@ module FIR(
                     acc6 <= tap6 * buff6;
                     acc7 <= tap7 * buff7;
                 end
-        end    
-        
-     /* Accumulate stage of FIR */   
-    always @ (posedge clk) 
-        begin
-            if (enable_fir == 1'b1)
+             
+	     if (enable_fir == 1'b1)
                 begin
                     m_axis_fir_tdata <= acc0 + acc1 + acc2 + acc3 + acc4 + acc5 + acc6 + acc7;
                 end
-        end     
+        end    
+        
+     /* Accumulate stage of FIR */
+     /*   
+    always @ (posedge clk) 
+        begin
+            
+        end   
+        */  
 
     
     
