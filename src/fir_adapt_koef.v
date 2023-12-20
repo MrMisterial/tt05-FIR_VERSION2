@@ -1,6 +1,9 @@
 `timescale 1ns / 1ps
 
-module FIR(
+module FIR #(
+	parameter TAP_SIZE = 6,
+	parameter NBR_OF_TAPS = 6
+) (
     input clk,
     input reset,
     input signed [5:0] x_n, 
@@ -11,7 +14,11 @@ module FIR(
 
     
     reg signed [5:0] buff0, buff1, buff2, buff3, buff4, buff5, buff6, buff7; 
+    
     reg signed [1:0] tap0, tap1, tap2, tap3, tap4, tap5, tap6, tap7; 
+    
+    reg [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
+    
     wire signed [7:0] acc0, acc1, acc2, acc3, acc4, acc5, acc6, acc7; 
     reg [1:0] next_state, state;
     
