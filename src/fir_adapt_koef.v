@@ -118,6 +118,7 @@ module FIR(
 				tap5 <= tap2;
 				tap6 <= tap3;
 				tap7 <= tap4;
+				/*
 
 				buff0 <= 6'd0;
 				buff1 <= 6'd0;        
@@ -127,6 +128,7 @@ module FIR(
 				buff5 <= 6'd0;
 				buff6 <= 6'd0;
 				buff7 <= 6'd0;
+				*/
     			end
     	end
     	
