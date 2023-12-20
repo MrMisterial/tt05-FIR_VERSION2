@@ -110,6 +110,7 @@ module FIR(
     	begin
     		if(event_shift_taps == 1'b1)
     			begin
+    			/*
 				tap0 <= x_n[5:4];
 				tap1 <= x_n[3:2];
 				tap2 <= x_n[1:0];
