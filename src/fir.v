@@ -9,25 +9,6 @@ module FIR(
     output reg signed [7:0] m_axis_fir_tdata
     );
 
-/*
-    always @ (posedge clk)
-        begin
-            m_axis_fir_tkeep <= 4'hf;
-        end
-*/
-/*
-    always @ (posedge clk)
-        begin
-            if (s_axis_fir_tlast == 1'b1)
-                begin
-                    m_axis_fir_tlast <= 1'b1;
-                end
-            else
-                begin
-                    m_axis_fir_tlast <= 1'b0;
-                end
-        end
-  */  
     // 15-tap FIR 
     reg enable_fir, enable_buff;
     reg [3:0] buff_cnt;
@@ -57,7 +38,7 @@ module FIR(
                 begin
                     buff_cnt <= 4'd0;
                     enable_fir <= 1'b0;
-                    in_sample <= 6'd0;
+                    in_sample <= 6'd0;                   
                 end
             else if (s_axis_fir_tvalid == 1'b0)
                 begin
