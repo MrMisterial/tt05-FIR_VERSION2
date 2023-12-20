@@ -58,20 +58,17 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     wire s_axis_fir_tvalid;
     assign s_axis_fir_tvalid = ui_in[6];
     
-    wire s_axis_fir_tready;
-    //assign s_axis_fir_tready = ui_in[7];
-    assign uio_out[0] = s_axis_fir_tready;
-    
-    
+    wire s_set_coeffs;
+    assign s_set_coeffs = ui_in[7];
     
     
     FIR FIR_i(
         .clk(clk),
         .reset(reset),
-        .s_axis_fir_tdata(s_axis_fir_tdata),       
+        .x_n(s_axis_fir_tdata),       
         .s_axis_fir_tvalid(s_axis_fir_tvalid), 
-        .s_axis_fir_tready(s_axis_fir_tready),    
-        .m_axis_fir_tdata(m_axis_fir_tdata));  
+        .s_set_coeffs(s_set_coeffs),   
+        .y_n(m_axis_fir_tdata));  
         
 	
 

@@ -3,7 +3,7 @@
 
 module fir_adapt_tb;
 
-    reg clk, reset, s_axis_fir_tvalid, m_axis_fir_tready;
+    reg clk, reset, s_axis_fir_tvalid;
     reg signed [5:0] s_axis_fir_tdata;
     wire m_axis_fir_tvalid;
     reg s_set_coeffs;
@@ -20,24 +20,27 @@ module fir_adapt_tb;
     end
     
     always begin
-    	reset = 0; #10
-        reset = 1; #2000000;
-
+    	reset = 0; #10;
+        reset = 1; #10;
+        reset = 0; #100000;
     end
-    
+    /*
     always begin
         s_axis_fir_tvalid = 0; #100;
         s_axis_fir_tvalid = 1; #998920;
     end
+    */
+    
+
     
     always begin
-        m_axis_fir_tready = 1; #998400;
-    end
-    
-    always begin
+    	s_axis_fir_tvalid = 1;
         s_set_coeffs = 0; #298
-        s_set_coeffs = 1; #35 // 3 takte
-        s_set_coeffs = 0; #2000000
+        s_set_coeffs = 1; 
+        s_axis_fir_tvalid = 0;
+        #35 // 3 takte
+        s_set_coeffs = 0; 
+        s_axis_fir_tvalid = 1; #2000000
         s_set_coeffs = 0; 
         
     end
@@ -47,11 +50,10 @@ module fir_adapt_tb;
     FIR FIR_i(
         .clk(clk),
         .reset(reset),
-        .s_axis_fir_tdata(s_axis_fir_tdata),       
+        .x_n(s_axis_fir_tdata),       
         .s_axis_fir_tvalid(s_axis_fir_tvalid), 
-        .s_set_coeffs(s_set_coeffs),
-        .s_axis_fir_tready(s_axis_fir_tready),    
-        .m_axis_fir_tdata(m_axis_fir_tdata));  
+        .s_set_coeffs(s_set_coeffs),  
+        .y_n(m_axis_fir_tdata));  
 
    
         
