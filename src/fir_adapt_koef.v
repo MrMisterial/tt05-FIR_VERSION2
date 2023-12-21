@@ -2,7 +2,7 @@
 
 module FIR #(
 	parameter TAP_SIZE = 6,
-	parameter NBR_OF_TAPS = 3,
+	parameter NBR_OF_TAPS = 2,
 	parameter X_N_SIZE = 8,
 	parameter Y_N_SIZE = 14 //TAP_SIZE + X_N_SIZE minimum
 ) (
@@ -134,7 +134,7 @@ module FIR #(
     				cnt_setup <= cnt_setup + 2'b01;
     				taps[0] <= {TAP_SIZE{1'b0}};
 				taps[1] <= {TAP_SIZE{1'b0}};
-				taps[2] <= {TAP_SIZE{1'b0}};
+				//taps[2] <= {TAP_SIZE{1'b0}};
 				/*
 				taps[3] <= 2'b00;
 				taps[4] <= 2'b01;
