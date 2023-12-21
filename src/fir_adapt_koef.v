@@ -25,9 +25,6 @@ module FIR #(
 
     reg [1:0] next_state, state;
     
-    reg event_shift_taps;
-    reg event_start_fir;
-    reg event_init_taps;
     
     localparam IDLE         = 2'b00;
     localparam ACTIVE       = 2'b01;
@@ -46,7 +43,7 @@ module FIR #(
     end
     			
     	
-    always @(state,s_set_coeffs,s_axis_fir_tvalid) begin
+    always @(state, s_set_coeffs,s_axis_fir_tvalid, cnt_setup) begin
     	case (state)
     	    SETUP: begin
     	    	if(cnt_setup == 2'b11) begin
@@ -88,6 +85,7 @@ module FIR #(
     end
     
     //brauche ich dieses switch case statement?
+    /*
     always @(state) begin
     
     	case (state)
@@ -122,73 +120,62 @@ module FIR #(
         endcase
     
     end
+    */
     
-    integer i;
+    integer i;    	
+    integer j;
+    integer w;
     always @ (negedge clk)
     	begin
     	
     		if(reset == 1'b1) begin	 
     			cnt_setup <= 2'b00;  			
     		end	
-    	
-    		if(event_init_taps == 1'b1)
-    			begin
-    				cnt_setup <= cnt_setup + 2'b01;
-    				taps[0] <= {TAP_SIZE{1'b1}};
-				taps[1] <= {TAP_SIZE{1'b0}};
-				taps[2] <= {TAP_SIZE{1'b1}};
-				/*
-				taps[3] <= 2'b00;
-				taps[4] <= 2'b01;
-				taps[5] <= 2'b00;
-				taps[6] <= 2'b01;
-				taps[7] <= 2'b00;	
-				*/
-    			
-    			end
-    		if(event_shift_taps == 1'b1)
-    			begin
-    				taps[0] <= x_n[TAP_SIZE-1:0];
-    				tap <= taps[2];
-				//taps[1] <= x_n[3:2];
-				//taps[2] <= x_n[1:0];
-				
-				for (i =1; i<(NBR_OF_TAPS); i = i + 1) begin //geht das so???
-					taps[i] <= taps[i-1];
-				end
-
-    			end
-    	end
-    	
-   integer j;
-   integer w;
-   always @ (negedge clk)
-        begin
-            if(event_start_fir == 1'b1)
-                begin
-                
-                	
-                buffs[0] <= x_n;
-                
-                
-                for (j =0; j<(BUFF_SIZE-1); j = j + 1) begin //geht das so???
-			buffs[j+1] <= buffs[j];
-		end
-		
-		
-                end
-            else
-                begin
-                
-                
-                for (w =0; w<(BUFF_SIZE-1); w = w + 1) begin //geht das so???
+    		
+    		case (state)
+    		SETUP: begin
+    			cnt_setup <= cnt_setup + 2'b01;
+			taps[0] <= {TAP_SIZE{1'b1}};
+			taps[1] <= {TAP_SIZE{1'b0}};
+			taps[2] <= {TAP_SIZE{1'b1}};
+    		end
+		IDLE: begin
+			for (w =0; w<(BUFF_SIZE-1); w = w + 1) begin //geht das so???
 			buffs[w] <= {X_N_SIZE{1'b0}};
+			end
+
+			
 		end
 		
+		ACTIVE: begin
+			buffs[0] <= x_n;
+		        for (j =0; j<(BUFF_SIZE-1); j = j + 1) begin //geht das so???
+				buffs[j+1] <= buffs[j];
+			end
+			
+		end 
+		
+		CONFIG: begin
+			taps[0] <= x_n[TAP_SIZE-1:0];
+			tap <= taps[2];
+			
+			for (i =1; i<(NBR_OF_TAPS); i = i + 1) begin //geht das so???
+				taps[i] <= taps[i-1];
+			end
+			
+		end
 
-                end
-        end 
-        
+		default: begin
+			for (w =0; w<(BUFF_SIZE-1); w = w + 1) begin //geht das so???
+			buffs[w] <= {X_N_SIZE{1'b0}};
+			end
+		end
+		    
+        	endcase
+    	
+    	end
+
+
 
     reg signed [Y_N_SIZE-1:0] sum;
     integer k;
