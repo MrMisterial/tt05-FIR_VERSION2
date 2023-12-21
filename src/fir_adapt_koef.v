@@ -84,6 +84,7 @@ module FIR #(
         endcase
     end
     
+    
     //brauche ich dieses switch case statement?
     /*
     always @(state) begin
