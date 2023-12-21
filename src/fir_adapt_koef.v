@@ -132,14 +132,16 @@ module FIR #(
     		if(event_init_taps == 1'b1)
     			begin
     				cnt_setup <= cnt_setup + 2'b01;
-    				taps[0] <= 2'b01;
-				taps[1] <= 2'b00;
-				taps[2] <= 2'b01;
+    				taps[0] <= {TAP_SIZE{1'b0}};
+				taps[1] <= {TAP_SIZE{1'b0}};
+				taps[2] <= {TAP_SIZE{1'b0}};
+				/*
 				taps[3] <= 2'b00;
 				taps[4] <= 2'b01;
 				taps[5] <= 2'b00;
 				taps[6] <= 2'b01;
 				taps[7] <= 2'b00;	
+				*/
     			
 
 				
@@ -147,12 +149,12 @@ module FIR #(
     			end
     		if(event_shift_taps == 1'b1)
     			begin
-    				taps[0] <= x_n[5:4];
-				taps[1] <= x_n[3:2];
-				taps[2] <= x_n[1:0];
+    				taps[0] <= x_n[TAP_SIZE-1:0];
+				//taps[1] <= x_n[3:2];
+				//taps[2] <= x_n[1:0];
 				
-				for (i =3; i<(NBR_OF_TAPS-1); i = i + 1) begin //geht das so???
-					taps[i] <= taps[i-3];
+				for (i =1; i<(NBR_OF_TAPS-1); i = i + 1) begin //geht das so???
+					taps[i] <= taps[i-1];
 				end
 
     			end
@@ -179,7 +181,7 @@ module FIR #(
                 
                 
                 for (w =0; w<(NBR_OF_TAPS-1); w = w + 1) begin //geht das so???
-			buffs[w] <= 6'd0;
+			buffs[w] <= {X_N_SIZE{1'b0}};
 		end
 		
 
@@ -187,7 +189,7 @@ module FIR #(
         end 
         
 
-    reg signed [7:0] sum;
+    reg signed [Y_N_SIZE-1:0] sum;
     integer k;
     always @( posedge clk) begin    	    
 	    sum = 0;	 	    
