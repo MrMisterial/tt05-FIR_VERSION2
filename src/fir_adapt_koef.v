@@ -18,6 +18,8 @@ module FIR #(
     parameter BUFF_SIZE = NBR_OF_TAPS*2-1; //NBR_OF_TAPS;//
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] buffs [0:BUFF_SIZE-1];
+    reg signed [TAP_SIZE-1:0] tap;
+    reg signed [X_N_SIZE-1:0] buff;
     
     reg [1:0] cnt_setup;
 
@@ -132,9 +134,9 @@ module FIR #(
     		if(event_init_taps == 1'b1)
     			begin
     				cnt_setup <= cnt_setup + 2'b01;
-    				taps[0] <= {TAP_SIZE{1'b0}};
-				taps[1] <= {TAP_SIZE{1'b1}};
-				taps[2] <= {TAP_SIZE{1'b0}};
+    				taps[0] <= {TAP_SIZE{1'b1}};
+				taps[1] <= {TAP_SIZE{1'b0}};
+				taps[2] <= {TAP_SIZE{1'b1}};
 				/*
 				taps[3] <= 2'b00;
 				taps[4] <= 2'b01;
@@ -147,10 +149,11 @@ module FIR #(
     		if(event_shift_taps == 1'b1)
     			begin
     				taps[0] <= x_n[TAP_SIZE-1:0];
+    				tap <= taps[2];
 				//taps[1] <= x_n[3:2];
 				//taps[2] <= x_n[1:0];
 				
-				for (i =1; i<(NBR_OF_TAPS-1); i = i + 1) begin //geht das so???
+				for (i =1; i<(NBR_OF_TAPS); i = i + 1) begin //geht das so???
 					taps[i] <= taps[i-1];
 				end
 
@@ -166,6 +169,7 @@ module FIR #(
                 
                 	
                 buffs[0] <= x_n;
+                
                 
                 for (j =0; j<(BUFF_SIZE-1); j = j + 1) begin //geht das so???
 			buffs[j+1] <= buffs[j];
@@ -189,9 +193,14 @@ module FIR #(
     reg signed [Y_N_SIZE-1:0] sum;
     integer k;
     always @( posedge clk) begin    	    
-	    sum = 0;	 	    
-	    for (k =0; k<(BUFF_SIZE-1); k = k + 1) begin //geht das so???
+	    sum = 0;	
+	    
+	    //sum = taps[0]*buffs[0] + taps[1]*buffs[1] + taps[2]*buffs[2]  +   taps[1]*buffs[3] + taps[0]*buffs[4];
+	    buff <= taps[2]*buffs[2];
+	    
+	    for (k =0; k<(BUFF_SIZE); k = k + 1) begin //geht das so???
 	    	//sum = sum + (taps[k]*buffs[k]);
+	    	//sum = sum + 1;
 	    	
 	    	if (k < (NBR_OF_TAPS)) begin
 	    		sum = sum + (taps[k]*buffs[k]);
@@ -200,12 +209,14 @@ module FIR #(
 	    		sum = sum + (taps[(BUFF_SIZE-1)-k]*buffs[k]);
 	    	end
 	    	
+	    	
 	    
 	    	
 
 	    end    
+	    
     end
-    assign y_n = (state == ACTIVE) ? sum : {Y_N_SIZE{1'b0}};
+    assign y_n = (state == ACTIVE) ? (sum) : {Y_N_SIZE{1'b0}}; // (sum >>TAP_SIZE) ???
     
     
     
