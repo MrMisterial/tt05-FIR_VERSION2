@@ -2,7 +2,7 @@
 
 module FIR #(
 	parameter TAP_SIZE = 3,
-	parameter NBR_OF_TAPS = 6,
+	parameter NBR_OF_TAPS = 3,
 	parameter X_N_SIZE = 8,
 	parameter Y_N_SIZE = 11 //TAP_SIZE + X_N_SIZE minimum
 ) (
@@ -193,7 +193,7 @@ module FIR #(
 	    for (k =0; k<(BUFF_SIZE-1); k = k + 1) begin //geht das so???
 	    	//sum = sum + (taps[k]*buffs[k]);
 	    	
-	    	if (k < (NBR_OF_TAPS-1)) begin
+	    	if (k < (NBR_OF_TAPS)) begin
 	    		sum = sum + (taps[k]*buffs[k]);
 	    	end
 	    	else begin
