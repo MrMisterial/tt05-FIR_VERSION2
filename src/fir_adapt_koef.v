@@ -15,7 +15,7 @@ module FIR #(
     );
 
 
-    parameter BUFF_SIZE = 5;//NBR_OF_TAPS*2-1; //NBR_OF_TAPS;//
+    parameter BUFF_SIZE = 4;//NBR_OF_TAPS*2-1; //NBR_OF_TAPS;//
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] buffs [0:BUFF_SIZE-1];
     
