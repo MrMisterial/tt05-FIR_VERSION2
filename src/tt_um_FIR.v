@@ -48,11 +48,11 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     //seg7 seg7(.counter(digit), .segments(led_out));
     
         
-    wire [9:0] m_axis_fir_tdata; //FIR OUTPUT DATA
+    wire [10:0] m_axis_fir_tdata; //FIR OUTPUT DATA
     assign uo_out = m_axis_fir_tdata[7:0]; //8Bits output
     
-    assign uio_out[1:0] = m_axis_fir_tdata[9:8]; //8Bits output
-    assign uio_out[5:2] = 4'b0000;
+    assign uio_out[2:0] = m_axis_fir_tdata[10:8]; //8Bits output
+    assign uio_out[5:3] = 3'b000;
     
     assign uio_out[7:6] = 2'b00; //8Bits output
     
