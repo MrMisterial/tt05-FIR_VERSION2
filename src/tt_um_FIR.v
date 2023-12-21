@@ -15,7 +15,8 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     //wire [6:0] led_out;
     //assign uo_out[7:0] = 8'b00000000;
     //assign uio_out[7:0] = 8'b00000000;
-    assign uio_oe[7:0] = 8'b11111100;
+    //assign uio_oe[7:0] = 8'b11111100;
+    assign uio_oe[7:0] = 8'b00111111;
     //assign uo_out[7] = 1'b0;
 
     // use bidirectionals as outputs
@@ -55,10 +56,10 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     
     //set param
     wire s_set_coeffs;
-    assign s_set_coeffs = uio_out[6];
+    assign s_set_coeffs = uio_in[6];
     
     wire s_axis_fir_tvalid;
-    assign s_axis_fir_tvalid = uio_out[7];
+    assign s_axis_fir_tvalid = uio_in[7];
    
     
     wire [7:0] s_axis_fir_tdata; //FIR INPUT DATA 
