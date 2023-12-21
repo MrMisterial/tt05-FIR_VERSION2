@@ -43,7 +43,7 @@ module FIR #(
     end
     			
     	
-    always @(state, s_set_coeffs,s_axis_fir_tvalid, cnt_setup) begin
+    always @(state,s_set_coeffs,s_axis_fir_tvalid, cnt_setup) begin //, 
     	case (state)
     	    SETUP: begin
     	    	if(cnt_setup == 2'b11) begin
