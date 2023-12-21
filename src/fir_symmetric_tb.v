@@ -66,12 +66,14 @@ module fir_adapt_tb;
     	$dumpfile("fir_symmetric_tb.vcd");
     	$dumpvars;
     	
+    	//initial impulse response test
 	s_axis_fir_tdata <= 8'd0; #300
 	
 	s_axis_fir_tdata <= 8'd1; #10
 	
 	s_axis_fir_tdata <= 8'd0; #998
 	
+	//set new fir coeffs
 	s_set_coeffs = 1;
 	s_axis_fir_tvalid = 0; 
 	#2
@@ -82,11 +84,33 @@ module fir_adapt_tb;
 	s_axis_fir_tvalid = 1;
 	s_set_coeffs = 0; #2; #100
 	
+	//impulse response with new coeffs
 	s_axis_fir_tdata <= 8'd0; #300
 	
 	s_axis_fir_tdata <= 8'd1; #10
 	
 	s_axis_fir_tdata <= 8'd0; #1000
+	
+	
+	//reset fir to old coeffs
+	reset = 1; #10;
+	reset = 0; #10;
+	
+	//impulse response after coeffs
+	s_axis_fir_tdata <= 8'd0; #300
+	
+	s_axis_fir_tdata <= 8'd1; #10
+	
+	s_axis_fir_tdata <= 8'd0; #1000
+	
+	
+	//test tvalid flag
+	s_axis_fir_tdata <= 8'd1; #18
+	
+	s_axis_fir_tvalid = 0; #2; #100
+	
+	s_axis_fir_tvalid = 1; #1000
+	
 	
 	/*
 	
