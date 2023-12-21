@@ -15,7 +15,7 @@ module FIR #(
     );
 
 
-    parameter BUFF_SIZE = NBR_OF_TAPS*2-1;
+    parameter BUFF_SIZE = NBR_OF_TAPS;//NBR_OF_TAPS*2-1;
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] buffs [0:BUFF_SIZE-1];
     
@@ -191,13 +191,15 @@ module FIR #(
     always @( posedge clk) begin    	    
 	    sum = 0;	 	    
 	    for (k =0; k<(BUFF_SIZE-1); k = k + 1) begin //geht das so???
-	    
+	    	sum = sum + (taps[k]*buffs[k]);
+	    	/*
 	    	if (k < (NBR_OF_TAPS-1)) begin
 	    		sum = sum + (taps[k]*buffs[k]);
 	    	end
 	    	else begin
 	    		sum = sum + (taps[(BUFF_SIZE-1)-k]*buffs[k]);
 	    	end
+	    	*/
 	    
 	    	
 
