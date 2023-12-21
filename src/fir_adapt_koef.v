@@ -4,7 +4,7 @@ module FIR #(
 	parameter TAP_SIZE = 2,
 	parameter NBR_OF_TAPS = 3,
 	parameter X_N_SIZE = 8,
-	parameter Y_N_SIZE = 14 //TAP_SIZE + X_N_SIZE minimum
+	parameter Y_N_SIZE = 10 //TAP_SIZE + X_N_SIZE minimum
 ) (
     input clk,
     input reset,
