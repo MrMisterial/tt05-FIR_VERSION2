@@ -134,7 +134,7 @@ module FIR #(
     				cnt_setup <= cnt_setup + 2'b01;
     				taps[0] <= {TAP_SIZE{1'b0}};
 				taps[1] <= {TAP_SIZE{1'b1}};
-				//taps[2] <= {TAP_SIZE{1'b0}};
+				taps[2] <= {TAP_SIZE{1'b0}};
 				/*
 				taps[3] <= 2'b00;
 				taps[4] <= 2'b01;
