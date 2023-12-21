@@ -14,8 +14,8 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     wire reset = rst_n;
     //wire [6:0] led_out;
     //assign uo_out[7:0] = 8'b00000000;
-    assign uio_out[7:0] = 8'b00000000;
-    assign uio_oe[7:0] = 8'b11111111;
+    //assign uio_out[7:0] = 8'b00000000;
+    assign uio_oe[7:0] = 8'b00111111;
     //assign uo_out[7] = 1'b0;
 
     // use bidirectionals as outputs
@@ -25,8 +25,7 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     //assign uio_out = second_counter[7:0];
 
     // external clock is 10MHz, so need 24 bit counter
-    reg [23:0] second_counter;
-    reg [3:0] digit;
+
 
     // if external inputs are set then use that as compare count
     // otherwise use the hard coded MAX_COUNT
@@ -48,18 +47,23 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     //seg7 seg7(.counter(digit), .segments(led_out));
     
         
-    wire [7:0] m_axis_fir_tdata; //FIR OUTPUT DATA
-    assign uo_out = m_axis_fir_tdata;
-   
+    wire [13:0] m_axis_fir_tdata; //FIR OUTPUT DATA
+    assign uo_out = m_axis_fir_tdata[7:0]; //8Bits output
     
-    wire [5:0] s_axis_fir_tdata; //FIR INPUT DATA 
-    assign s_axis_fir_tdata = ui_in[5:0]; //First 6 Bit are used
+    wire [13:0] m_axis_fir_tdata; //FIR OUTPUT DATA
+    assign uio_out[5:0] = m_axis_fir_tdata[13:8]; //8Bits output
+    
+    //set param
+    wire s_set_coeffs;
+    assign s_set_coeffs = uio_out[6];
     
     wire s_axis_fir_tvalid;
-    assign s_axis_fir_tvalid = ui_in[6];
+    assign s_axis_fir_tvalid = uio_out[7];
+   
     
-    wire s_set_coeffs;
-    assign s_set_coeffs = ui_in[7];
+    wire [7:0] s_axis_fir_tdata; //FIR INPUT DATA 
+    assign s_axis_fir_tdata = ui_in[7:0]; //8 Bit in
+
     
     
     FIR FIR_i(

@@ -1,10 +1,10 @@
 `timescale 1ns / 1ps
 
 module FIR #(
-	parameter TAP_SIZE = 2,
-	parameter NBR_OF_TAPS = 8,
-	parameter X_N_SIZE = 6,
-	parameter Y_N_SIZE = 8
+	parameter TAP_SIZE = 6,
+	parameter NBR_OF_TAPS = 21,
+	parameter X_N_SIZE = 8,
+	parameter Y_N_SIZE = 14 //TAP_SIZE + X_N_SIZE minimum
 ) (
     input clk,
     input reset,
@@ -18,7 +18,6 @@ module FIR #(
     
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] buffs [0:NBR_OF_TAPS-1];
-    //wire signed [Y_N_SIZE-1:0] accs [0:NBR_OF_TAPS-1];
     
     reg [1:0] cnt_setup;
 
@@ -38,17 +37,6 @@ module FIR #(
     always @ (posedge clk) begin	
     		if(reset == 1'b1) begin
     			state <= SETUP; 
-    			//cnt_setup <= 2'b00;	
-    			/*		
-    			tap0 <= 2'b01;
-			tap1 <= 2'b00;
-			tap2 <= 2'b01;
-			tap3 <= 2'b00;
-			tap4 <= 2'b01;
-			tap5 <= 2'b00;
-			tap6 <= 2'b01;
-			tap7 <= 2'b00;	
-			*/	
     		end
     		else begin
     			state <= next_state;
@@ -159,18 +147,6 @@ module FIR #(
     			end
     		if(event_shift_taps == 1'b1)
     			begin
-    				/* working
-    				taps[0] <= x_n[5:4];
-				taps[1] <= x_n[3:2];
-				taps[2] <= x_n[1:0];
-				taps[3] <= taps[0];
-				taps[4] <= taps[1];
-				taps[5] <= taps[2];
-				taps[6] <= taps[3];
-				taps[7] <= taps[4];
-				*/
-    				
-    				
     				taps[0] <= x_n[5:4];
 				taps[1] <= x_n[3:2];
 				taps[2] <= x_n[1:0];
@@ -210,67 +186,15 @@ module FIR #(
                 end
         end 
         
-    /*
-    genvar k;
-    
-    wire signed [Y_N_SIZE-1:0] sum_steps [NBR_OF_TAPS-1:0];
-    
-       
-    generate
-    for (k =0; k<(NBR_OF_TAPS-1); k = k + 1) begin //geht das so???
-    	assign sum_steps[k + 1] = sum_steps[k] + (taps[k]*buffs[k]);
-    end 
-    endgenerate
-    
-    assign y_n = (state == ACTIVE) ? sum_steps[NBR_OF_TAPS-1] : 14'd0;
-    */
-    
-    
-    /*
-    sum_fir = 'd0;
-    for (i =0; i<NBR_OF_TAPS; i = i + 1) begin //geht das so???
-	sum_fir = sum_fir + taps[i]*buffs[i];
-    end
-    */
-              
-    
-    /*
-    always @(*) begin
-    
-    
-    for (k =0; k<(NBR_OF_TAPS-1); k = k + 1) 
-    begin //geht das so???
-    	assign accs[k] = taps[k] * buffs[k];
-    end 
-    
-    
-    end
-    */
-    
-    
-    
-    //wire signed [Y_N_SIZE-1:0] sum_steps [NBR_OF_TAPS-1:0];
-    
+
     reg signed [7:0] sum;
     integer k;
-    always @( posedge clk) begin
-    
-	    
-	    sum = 0;
-	    
-	    
+    always @( posedge clk) begin    	    
+	    sum = 0;	 	    
 	    for (k =0; k<5; k = k + 1) begin //geht das so???
 	    	sum = sum + (taps[k]*buffs[k]);
-	    	//sum <= sum + (taps[k]*buffs[k]);
-	    	//assign sum_steps[k + 1] = sum_steps[k] + (taps[k]*buffs[k]);
-	    end 
-	    
-	    
-	    
-	    //assign y_n = (state == ACTIVE) ? sum : 14'd0;
-	    
-    
-    
+
+	    end    
     end
     assign y_n = (state == ACTIVE) ? sum : {Y_N_SIZE{1'b0}};
     
