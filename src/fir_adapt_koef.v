@@ -129,6 +129,7 @@ module FIR #(
     always @ (negedge clk)
     	begin
     	
+    	
     		if(reset == 1'b1) begin	 
     			cnt_setup <= 2'b00;  			
     		end	
