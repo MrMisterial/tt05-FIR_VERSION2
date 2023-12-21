@@ -190,7 +190,7 @@ module FIR #(
     integer k;
     always @( posedge clk) begin    	    
 	    sum = 0;	 	    
-	    for (k =0; k<(BUFF_SIZE-1); k = k + 1) begin //geht das so???
+	    for (k =0; k<(NBR_OF_TAPS-1); k = k + 1) begin //geht das so???
 	    	sum = sum + (taps[k]*buffs[k]);
 	    	/*
 	    	if (k < (NBR_OF_TAPS-1)) begin
