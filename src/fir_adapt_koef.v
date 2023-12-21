@@ -32,13 +32,13 @@ module FIR #(
     localparam ACTIVE       = 2'b01;
     localparam CONFIG       = 2'b10;
     localparam SETUP        = 2'b11;
-    
+     
     
     
     always @ (posedge clk) begin	
     		if(reset == 1'b1) begin
     			state <= SETUP; 
-    			cnt_setup <= 2'b00;	
+    			//cnt_setup <= 2'b00;	
     			/*		
     			tap0 <= 2'b01;
 			tap1 <= 2'b00;
@@ -137,6 +137,10 @@ module FIR #(
     always @ (negedge clk)
     	begin
     	
+    		if(reset == 1'b1) begin	 
+    			cnt_setup <= 2'b00;  			
+    		end	
+    	
     		if(event_init_taps == 1'b1)
     			begin
     				cnt_setup <= cnt_setup + 2'b01;
@@ -179,6 +183,7 @@ module FIR #(
     	end
     	
    integer j;
+   integer w;
    always @ (negedge clk)
         begin
             if(event_start_fir == 1'b1)
@@ -197,8 +202,8 @@ module FIR #(
                 begin
                 
                 
-                for (i =0; i<(NBR_OF_TAPS-1); i = i + 1) begin //geht das so???
-			buffs[i] <= 6'd0;
+                for (w =0; w<(NBR_OF_TAPS-1); w = w + 1) begin //geht das so???
+			buffs[w] <= 6'd0;
 		end
 		
 
