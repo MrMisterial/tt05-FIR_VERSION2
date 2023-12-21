@@ -17,7 +17,7 @@ module FIR #(
 
     
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
-    reg signed [X_N_SIZE-1:0] buffs [0:NBR_OF_TAPS-1];
+    reg signed [X_N_SIZE-1:0] buffs [0:(NBR_OF_TAPS-1)*2];
     
     reg [1:0] cnt_setup;
 
@@ -142,9 +142,6 @@ module FIR #(
 				taps[6] <= 2'b01;
 				taps[7] <= 2'b00;	
 				*/
-    			
-
-				
     			
     			end
     		if(event_shift_taps == 1'b1)
