@@ -52,7 +52,9 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
     assign uo_out = m_axis_fir_tdata[7:0]; //8Bits output
     
     wire [13:0] m_axis_fir_tdata; //FIR OUTPUT DATA
-    assign uio_out[5:0] = m_axis_fir_tdata[13:8]; //8Bits output
+    assign uio_out[1:0] = m_axis_fir_tdata[9:8]; //8Bits output
+    assign uio_out[5:2] = 4'b0000;
+    
     assign uio_out[7:6] = 2'b00; //8Bits output
     
     //set param
