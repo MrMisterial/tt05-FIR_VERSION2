@@ -19,7 +19,7 @@ module FIR #(
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] buffs [0:BUFF_SIZE-1];
     //reg signed [TAP_SIZE-1:0] tap;
-    reg signed [X_N_SIZE-1:0] buff;
+    //reg signed [X_N_SIZE-1:0] buff;
     
     reg signed [TAP_SIZE-1:0] new_taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] new_buffs [0:BUFF_SIZE-1];
@@ -43,10 +43,12 @@ module FIR #(
 
     reg [2:0] next_state, state;
     
+    /*
     wire signed [X_N_SIZE-1:0] buff0 = buffs[0];
     wire signed [X_N_SIZE-1:0] buff1 = buffs[1];
     wire signed [X_N_SIZE-1:0] buff2 = buffs[2];
     wire signed [X_N_SIZE-1:0] buff3 = buffs[3];
+    */
     
     
     localparam SETUP        = 3'b000;
