@@ -75,7 +75,7 @@ module tt_um_FIR #( parameter MAX_COUNT = 24'd10_000_000 ) (
         .x_n(s_axis_fir_tdata),       
         .s_axis_fir_tvalid(s_axis_fir_tvalid), 
         .s_set_coeffs(s_set_coeffs),   
-        .y_n(m_axis_fir_tdata));  
+        .o_y_n(m_axis_fir_tdata));  
         
 	
 
