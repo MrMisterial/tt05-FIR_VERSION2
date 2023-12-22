@@ -15,7 +15,7 @@ module FIR #(
     );
 
 
-    parameter BUFF_SIZE = 3;//NBR_OF_TAPS*2-1; //NBR_OF_TAPS;//
+    parameter BUFF_SIZE = 6;//NBR_OF_TAPS*2-1; //NBR_OF_TAPS;//
     reg signed [TAP_SIZE-1:0] taps [0:NBR_OF_TAPS-1];
     reg signed [X_N_SIZE-1:0] buffs [0:BUFF_SIZE-1];
     //reg signed [TAP_SIZE-1:0] tap;
@@ -37,8 +37,8 @@ module FIR #(
     reg [1:0] cnt_tap;
     reg [1:0] new_cnt_tap;
     
-    reg [1:0] cnt_buff;
-    reg [1:0] new_cnt_buff;
+    reg [2:0] cnt_buff;
+    reg [2:0] new_cnt_buff;
     
 
     reg [2:0] next_state, state;
@@ -68,7 +68,7 @@ module FIR #(
     			state <= SETUP; 
     			cnt_setup <= 2'b00;  //???
     			cnt_tap <= 2'b00;
-    			cnt_buff <= 2'b00;
+    			cnt_buff <= 3'b000;
     			y_n <= {Y_N_SIZE{1'b0}};
     			act_y_n <= {Y_N_SIZE{1'b0}};
     			
@@ -171,7 +171,7 @@ module FIR #(
             */
             
             	new_cnt_tap = 2'b00;
-    		new_cnt_buff = 2'b00;
+    		new_cnt_buff = 3'b000;
     		new_y_n = {Y_N_SIZE{1'b0}};
             	
             
@@ -196,7 +196,7 @@ module FIR #(
             	if (cnt_tap == 2'b11) begin //make generic
             		next_state = SET_OUTPUT;
             	end else begin
-		    	new_y_n = y_n + (taps[cnt_tap]*buffs[cnt_buff]);
+		    	new_y_n = y_n + (taps[cnt_tap]*buffs[cnt_buff]+taps[cnt_tap]*buffs[(BUFF_SIZE-1)-new_cnt_buff]);
 		    	
 		    	new_cnt_tap = cnt_tap + 2'b1;
 		    	new_cnt_buff = cnt_buff + 2'b1;
