@@ -71,6 +71,14 @@ module FIR #(
     			cnt_buff <= 3'b000;
     			y_n <= {Y_N_SIZE{1'b0}};
     			act_y_n <= {Y_N_SIZE{1'b0}};
+    			
+    			for (e =0; e<(NBR_OF_TAPS); e = e + 1) begin //geht das so???
+				taps[e] <= {TAP_SIZE{1'b0}};
+			end
+			
+			for (r =0; r<(BUFF_SIZE); r = r + 1) begin //geht das so???
+				buffs[r] <= {X_N_SIZE{1'b0}};
+			end
     		end
     		else begin
     			state <= next_state;
@@ -107,12 +115,12 @@ module FIR #(
 	new_y_n = y_n;
 	new_act_y_n = act_y_n;
     	
-    	for (w =0; w<(BUFF_SIZE-1); w = w + 1) begin //geht das so???
-		new_buffs[w] = buffs[w];
+    	for (w =0; w<(BUFF_SIZE); w = w + 1) begin //geht das so???
+		new_buffs[w] = {X_N_SIZE{1'b0}};
 	end
 	
-	for (w =0; w<(BUFF_SIZE-1); w = w + 1) begin //geht das so???
-		new_taps[w] = taps[w];
+	for (w =0; w<(NBR_OF_TAPS); w = w + 1) begin //geht das so???
+		new_taps[w] = {TAP_SIZE{1'b0}};
 	end
 	
 	
