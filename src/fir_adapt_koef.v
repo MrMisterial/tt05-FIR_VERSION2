@@ -78,7 +78,7 @@ module FIR #(
     			y_n <= new_y_n;
     			cnt_tap <= new_cnt_tap;
     			cnt_buff <= new_cnt_buff;
-    			buff <= new_taps[0];
+    			//buff <= new_taps[0];
     			act_y_n <= new_act_y_n;
     			
     			for (e =0; e<(NBR_OF_TAPS); e = e + 1) begin //geht das so???
