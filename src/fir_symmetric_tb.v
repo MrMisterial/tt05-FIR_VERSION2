@@ -67,7 +67,7 @@ module fir_adapt_tb;
     	$dumpvars;
     	
     	//initial impulse response test
-	s_axis_fir_tdata <= 8'd0; #300
+	s_axis_fir_tdata <= 8'd0; #300; 
 	
 	s_axis_fir_tdata <= 8'd1; #10 //10
 	
