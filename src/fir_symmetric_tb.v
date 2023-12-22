@@ -54,7 +54,7 @@ module fir_adapt_tb;
         .x_n(s_axis_fir_tdata),       
         .s_axis_fir_tvalid(s_axis_fir_tvalid), 
         .s_set_coeffs(s_set_coeffs),  
-        .y_n(m_axis_fir_tdata));  
+        .o_y_n(m_axis_fir_tdata));  
 
    
         
@@ -69,17 +69,18 @@ module fir_adapt_tb;
     	//initial impulse response test
 	s_axis_fir_tdata <= 8'd0; #300
 	
-	s_axis_fir_tdata <= 8'd1; #10
+	s_axis_fir_tdata <= 8'd1; #10 //10
 	
 	s_axis_fir_tdata <= 8'd0; #998
 	
+	#10
 	//set new fir coeffs
 	s_set_coeffs = 1;
 	s_axis_fir_tvalid = 0; 
 	#2
 	s_axis_fir_tdata <= 8'd1; #10
 	s_axis_fir_tdata <= 8'd2; #10
-	s_axis_fir_tdata <= 8'd3; #8
+	s_axis_fir_tdata <= 8'd3; #10
 	s_axis_fir_tdata <= 8'd0;
 	s_axis_fir_tvalid = 1;
 	s_set_coeffs = 0; #2; #100
@@ -87,6 +88,7 @@ module fir_adapt_tb;
 	//impulse response with new coeffs
 	s_axis_fir_tdata <= 8'd0; #300
 	
+	#20; #10;
 	s_axis_fir_tdata <= 8'd1; #10
 	
 	s_axis_fir_tdata <= 8'd0; #1000
