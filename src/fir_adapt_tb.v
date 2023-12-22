@@ -4,11 +4,11 @@
 module fir_adapt_tb;
 
     reg clk, reset, s_axis_fir_tvalid;
-    reg signed [5:0] s_axis_fir_tdata;
+    reg signed [7:0] s_axis_fir_tdata;
     wire m_axis_fir_tvalid;
     reg s_set_coeffs;
     wire [3:0] m_axis_fir_tkeep;
-    wire [7:0] m_axis_fir_tdata;
+    wire [10:0] m_axis_fir_tdata;
     
     /*
      * 100Mhz (10ns) clock 

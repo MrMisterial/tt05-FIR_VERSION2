@@ -43,11 +43,16 @@ module FIR #(
     end
     			
     	
-    always @(state,s_set_coeffs,s_axis_fir_tvalid, cnt_setup) begin //, 
+    always @* begin //, posedge clk, 
+    
+    //state,s_set_coeffs,s_axis_fir_tvalid, cnt_setup
+    
+    	next_state = state;
+    
     	case (state)
     	    SETUP: begin
     	    	if(cnt_setup == 2'b11) begin
-    	    		next_state <= IDLE;
+    	    		next_state = IDLE;
     	    	end
     	    	
     	    
@@ -55,32 +60,32 @@ module FIR #(
     	    
             IDLE: begin
 		if (s_axis_fir_tvalid == 1'b1) begin
-			next_state <= ACTIVE;
+			next_state = ACTIVE;
 		end
 		
 		if (s_set_coeffs == 1'b1) begin
-			next_state <= CONFIG;
+			next_state = CONFIG;
 		end
             end
             ACTIVE: begin
             	if (s_set_coeffs == 1'b1) begin
-            		next_state <= CONFIG;
+            		next_state = CONFIG;
             	end
             	
             
             	if (s_axis_fir_tvalid == 1'b0 && s_set_coeffs == 1'b0) begin
-            		next_state <= IDLE;
+            		next_state = IDLE;
             	end
                 
             end 
             CONFIG: begin
             	if (s_set_coeffs == 1'b0) begin
-                	next_state <= IDLE;
+                	next_state = IDLE;
                 end
             end
             
             default: 
-                    next_state <= IDLE;
+                    next_state = IDLE;
         endcase
     end
     
