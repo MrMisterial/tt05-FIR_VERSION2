@@ -1,6 +1,13 @@
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
+from cocotb.binary import BinaryValue, BinaryRepresentation
+
+async def reset_dut(reset_n, duration_ns):
+	reset_n.value = 0
+	await Timer(duration_ns, units="ns")
+	reset_n.value = 1
+	reset_n._log.info("Reset complete")
 
 
 segments = [ 63, 6, 91, 79, 102, 109, 125, 7, 127, 111 ]
